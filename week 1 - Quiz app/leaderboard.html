@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="assets/style.css">
+    <title>Leaderboard</title>
+</head>
+
+<body>
+    <header>
+        <a href="javascript:history.back()">Go Back</a>
+        <p></p>
+    </header>
+    <main>
+        <div class="container" id="leaderboard_ctn"></div>
+    </main>
+    <script>
+        var data = localStorage.getItem("leaderBoard");
+        var leaders = data === null ? [] : JSON.parse(data);
+        console.log(leaders);
+        var leaderboardContainer = document.getElementById("leaderboard_ctn");
+        var text = "<h2>LeaderBorad</h2>"
+        if (leaders.length === 0) {
+            text += "<p>No leaders</p>"
+        } else {
+            leaders.forEach(i => {
+                text += `<p>${i.name} - ${i.score}</p>`;
+            });
+        }
+
+        leaderboardContainer.innerHTML = text;
+    </script>
+</body>
+
+</html>

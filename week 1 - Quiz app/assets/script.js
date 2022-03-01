@@ -52,6 +52,12 @@ let isAswered = null;
 let score = 0;
 let timeLeft = 49;
 let timer;
+let leaders;
+
+//fetching data from local storage
+
+var data = localStorage.getItem("leaderBoard");
+leaders = data === null ? [] : JSON.parse(data);
 
 //event listeners
 quizStartButton.addEventListener('click', (e) => {
@@ -68,7 +74,6 @@ quizStartButton.addEventListener('click', (e) => {
 });
 
 const updateQuizQuestion = () => {
-  console.log(defaultQuestions[currentQuizIndex])
   var string = `<h2>${defaultQuestions[currentQuizIndex].questionText}</h2>`
   defaultQuestions[currentQuizIndex].options.forEach((element, idx) => {
     string += `<p class="answer" onClick="handleAnswerClick(${idx})">${element}</p><br/>`
@@ -96,7 +101,7 @@ const showResult = () => {
 
 
 function handleAnswerClick(idx) {
-  console.log(idx);
+  // console.log(idx);
   isAswered = (defaultQuestions[currentQuizIndex].options[idx] === defaultQuestions[currentQuizIndex].answer);
   if (isAswered) {
     score += 1;
@@ -118,8 +123,27 @@ function saveUser(e) {
     alert("please provide a name");
     return;
   }
-  console.log(userName);
+  // console.log(userName);
+  // store username , marks in local storeage
+  leaders.push({
+    name: userName,
+    score: score,
+  });
+
+  leaders.sort(compare);
+
+  console.log(leaders);
+  localStorage.setItem("leaderBoard", JSON.stringify(leaders))
   resetQuiz();
+}
+function compare(a, b) {
+  if (a.score > b.score) {
+    return -1;
+  }
+  if (a.score < b.socre) {
+    return 1;
+  }
+  return 0;
 }
 
 function resetQuiz() {
